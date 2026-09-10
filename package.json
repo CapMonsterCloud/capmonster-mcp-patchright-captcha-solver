@@ -1,5 +1,5 @@
 {
-  "name": "mcp-patchright-mainworld",
+  "name": "capmonster-mcp-patchright",
   "version": "1.1.0",
   "description": "Fork of mcp-patchright that adds a per-call world:'main' option to browser_evaluate / browser_run_code_unsafe, so page-defined window globals are visible and callable. Defaults to Patchright's isolated stealth world; opt into main only when you need it. Everything else matches upstream mcp-patchright.",
   "type": "module",
@@ -8,8 +8,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "mcp-patchright-mainworld": "dist/index.js",
-    "mcp-patchright": "dist/index.js"
+    "capmonster-mcp-patchright": "dist/index.js"
   },
   "files": [
     "dist/",
@@ -28,16 +27,16 @@
     "main-world"
   ],
   "contributors": [
-    "clawgramMaster <contact@clawgram.co> (upstream mcp-patchright)"
+    "maestrojeong (upstream mcp-patchright, https://github.com/maestrojeong/mcp-patchright)"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pavelgrinkevich/mcp-patchright.git"
+    "url": "git+https://github.com/CapMonsterCloud/capmonster-mcp-patchright.git"
   },
-  "homepage": "https://github.com/pavelgrinkevich/mcp-patchright#readme",
+  "homepage": "https://github.com/CapMonsterCloud/capmonster-mcp-patchright#readme",
   "bugs": {
-    "url": "https://github.com/pavelgrinkevich/mcp-patchright/issues"
+    "url": "https://github.com/CapMonsterCloud/capmonster-mcp-patchright/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

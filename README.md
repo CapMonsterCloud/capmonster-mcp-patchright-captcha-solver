@@ -1,12 +1,12 @@
-# mcp-patchright-mainworld
+# capmonster-mcp-patchright
 
 🛡️ Undetectable browser MCP server — 66 tools, Patchright-powered, zero CDP fingerprint.
 
-[![npm]](https://npmjs.com/mcp-patchright-mainworld) [![MCP]](https://modelcontextprotocol.io)
+[![npm]](https://npmjs.com/capmonster-mcp-patchright) [![MCP]](https://modelcontextprotocol.io)
 
 Passes Cloudflare / Akamai / Kasada / Datadome.
 
-Fork of [mcp-patchright](https://github.com/clawgramMaster/mcp-patchright) that adds a per-call
+Fork of [mcp-patchright](https://github.com/maestrojeong/mcp-patchright) that adds a per-call
 `world: "main"` option to `browser_evaluate` / `browser_run_code_unsafe`, so page-defined window
 globals are visible and callable. Defaults to Patchright's isolated stealth world (matching
 upstream); opt into `main` only when a page's own script needs to see or be called by your
@@ -27,8 +27,8 @@ See the [full comparison](#) for details.
 ## Quick start
 
 ```bash
-npm i -g mcp-patchright-mainworld
-mcp-patchright-mainworld --port 9321 --host 127.0.0.1
+npm i -g capmonster-mcp-patchright
+capmonster-mcp-patchright --port 9321 --host 127.0.0.1
 ```
 
 ### With Claude / GPT / agents
@@ -38,7 +38,7 @@ mcp-patchright-mainworld --port 9321 --host 127.0.0.1
   "mcpServers": {
     "patchright": {
       "command": "npx",
-      "args": ["mcp-patchright-mainworld", "--port", "9321", "--host", "127.0.0.1"]
+      "args": ["capmonster-mcp-patchright", "--port", "9321", "--host", "127.0.0.1"]
     }
   }
 }
@@ -195,7 +195,7 @@ MCP config example:
   "mcpServers": {
     "patchright": {
       "command": "node",
-      "args": ["/path/to/mcp-patchright-mainworld/dist/index.js"]
+      "args": ["/path/to/capmonster-mcp-patchright/dist/index.js"]
     }
   }
 }
