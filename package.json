@@ -1,0 +1,73 @@
+{
+  "name": "mcp-patchright-mainworld",
+  "version": "1.1.0",
+  "description": "Fork of mcp-patchright that adds a per-call world:'main' option to browser_evaluate / browser_run_code_unsafe, so page-defined window globals are visible and callable. Defaults to Patchright's isolated stealth world; opt into main only when you need it. Everything else matches upstream mcp-patchright.",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mcp-patchright-mainworld": "dist/index.js",
+    "mcp-patchright": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "package.json"
+  ],
+  "keywords": [
+    "patchright",
+    "mcp",
+    "stealth",
+    "browser",
+    "playwright",
+    "automation",
+    "antidetect",
+    "model-context-protocol",
+    "main-world"
+  ],
+  "contributors": [
+    "clawgramMaster <contact@clawgram.co> (upstream mcp-patchright)"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pavelgrinkevich/mcp-patchright.git"
+  },
+  "homepage": "https://github.com/pavelgrinkevich/mcp-patchright#readme",
+  "bugs": {
+    "url": "https://github.com/pavelgrinkevich/mcp-patchright/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "express": "^5.1.0",
+    "patchright": "1.61.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.3",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"try{require('fs').chmodSync('dist/index.js',0o755)}catch(e){}\"",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint src",
+    "lint:fix": "biome lint --write src",
+    "test:humanize": "node test/humanize.test.mjs",
+    "test:patchright": "node test/patchright-compat.test.mjs",
+    "test:mainworld": "node test/mainworld.test.mjs",
+    "test:init-script": "node test/init-script.test.mjs",
+    "test:save-blob": "node test/save-blob.test.mjs",
+    "test:proxy-reuse-guard": "node test/proxy-reuse-guard.test.mjs",
+    "test:evaluate-frame-selector": "node test/evaluate-frame-selector.test.mjs",
+    "test:owners": "npm run build && node test/owner-scope.test.mjs",
+    "test": "npm run build && npm run test:humanize && npm run test:patchright && npm run test:mainworld && npm run test:init-script && npm run test:save-blob && npm run test:proxy-reuse-guard && npm run test:evaluate-frame-selector && node test/owner-scope.test.mjs",
+    "release:check": "npm ci && npm run lint && npm test && npm publish --dry-run",
+    "prepublishOnly": "npm run build"
+  }
+}

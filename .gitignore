@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.js.map
+*.d.ts
+docs/gen-*.py
+docs/gen-*.sh
+.DS_Store
+tmp/
