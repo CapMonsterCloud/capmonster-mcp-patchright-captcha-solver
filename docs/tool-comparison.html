@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Tool Comparison: stealth-playwright-mcp vs @playwright/mcp</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 40px 24px 80px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #f0f6fc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .header .date {
+    font-size: 13px;
+    color: #8b949e;
+    margin-bottom: 16px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .badge-stealth {
+    background: #1f2a3a;
+    color: #79c0ff;
+    border: 1px solid #30363d;
+  }
+
+  .badge-official {
+    background: #1f2a1f;
+    color: #7ee787;
+    border: 1px solid #30363d;
+  }
+
+  .badge-gap {
+    background: #2a1f1f;
+    color: #ffa198;
+    border: 1px solid #30363d;
+  }
+
+  .badge .count {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* ── Sections ── */
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f0f6fc;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+    letter-spacing: -0.2px;
+  }
+
+  h2:first-of-type { margin-top: 0; }
+
+  p, .note {
+    margin-bottom: 14px;
+    color: #8b949e;
+    font-size: 14px;
+  }
+
+  .note strong { color: #c9d1d9; }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin-bottom: 28px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: #161b22;
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #f0f6fc;
+    border-bottom: 1px solid #30363d;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #21262d;
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover { background: #161b22; }
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    background: #161b22;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #d2a8ff;
+    white-space: nowrap;
+  }
+
+  /* ── Category tags ── */
+  .cat {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .cat-nav   { background: #1a2332; color: #79c0ff; }
+  .cat-input { background: #1a231a; color: #7ee787; }
+  .cat-info  { background: #231a1a; color: #ffa198; }
+  .cat-page  { background: #231a2a; color: #d2a8ff; }
+
+  /* ── Subsection for categorized list ── */
+  .cat-section {
+    margin-bottom: 20px;
+  }
+  .cat-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0f6fc;
+    margin-bottom: 8px;
+  }
+  .cat-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .cat-section li {
+    padding: 4px 0;
+    font-size: 14px;
+    color: #c9d1d9;
+  }
+  .cat-section li code {
+    background: transparent;
+    padding: 0;
+  }
+
+  /* ── Architecture comparison ── */
+  .arch-label {
+    font-weight: 600;
+    color: #f0f6fc;
+    white-space: nowrap;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #21262d;
+    font-size: 12px;
+    color: #484f58;
+  }
+
+  .inline-highlight {
+    color: #79c0ff;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="header">
+  <h1>MCP Tool Comparison: stealth-playwright-mcp vs @playwright/mcp</h1>
+  <p class="date">2026-05-27</p>
+  <div class="badges">
+    <span class="badge badge-stealth">
+      <span class="count">28</span> stealth-playwright-mcp
+    </span>
+    <span class="badge badge-official">
+      <span class="count">~50</span> @playwright/mcp
+    </span>
+    <span class="badge badge-gap">
+      <span class="count">17</span> Gap (Official 전용)
+    </span>
+  </div>
+</header>
+
+<!-- ═══════════ 1. 공통 툴 ═══════════ -->
+<h2>1. 공통 툴 (이름 일치)</h2>
+<p>
+  두 MCP 서버 모두 동일한 이름으로 제공하는 툴입니다.
+  <strong>21개</strong>의 툴이 완전히 일치하며, <code>browser_new_page</code>는
+  Stealth에 직접 구현되어 있고 Official은 <code>browser_tabs</code>를 통해 제공합니다.
+</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Tool Name</th>
+    <th>Category</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td><td><code>browser_navigate</code></td>
+    <td><span class="cat cat-nav">Navigation</span></td>
+    <td>URL로 이동</td>
+  </tr>
+  <tr>
+    <td>2</td><td><code>browser_navigate_back</code></td>
+    <td><span class="cat cat-nav">Navigation</span></td>
+    <td>이전 페이지로 이동</td>
+  </tr>
+  <tr>
+    <td>3</td><td><code>browser_snapshot</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>접근성 스냅샷 (페이지 구조)</td>
+  </tr>
+  <tr>
+    <td>4</td><td><code>browser_click</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>요소 클릭</td>
+  </tr>
+  <tr>
+    <td>5</td><td><code>browser_type</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>텍스트 입력</td>
+  </tr>
+  <tr>
+    <td>6</td><td><code>browser_hover</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>요소에 마우스 호버</td>
+  </tr>
+  <tr>
+    <td>7</td><td><code>browser_wait_for</code></td>
+    <td><span class="cat cat-nav">Navigation</span></td>
+    <td>조건 대기 (텍스트/요소 등장)</td>
+  </tr>
+  <tr>
+    <td>8</td><td><code>browser_evaluate</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>페이지 내 JS 실행</td>
+  </tr>
+  <tr>
+    <td>9</td><td><code>browser_select_option</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>&lt;select&gt; 옵션 선택</td>
+  </tr>
+  <tr>
+    <td>10</td><td><code>browser_handle_dialog</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>alert/confirm/prompt 대응</td>
+  </tr>
+  <tr>
+    <td>11</td><td><code>browser_file_upload</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>파일 업로드</td>
+  </tr>
+  <tr>
+    <td>12</td><td><code>browser_fill_form</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>폼 필드 일괄 입력</td>
+  </tr>
+  <tr>
+    <td>13</td><td><code>browser_press_key</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>키보드 입력 (Enter, Tab 등)</td>
+  </tr>
+  <tr>
+    <td>14</td><td><code>browser_drag</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>드래그 앤 드롭</td>
+  </tr>
+  <tr>
+    <td>15</td><td><code>browser_take_screenshot</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>스크린샷 캡처</td>
+  </tr>
+  <tr>
+    <td>16</td><td><code>browser_resize</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>뷰포트 크기 조정</td>
+  </tr>
+  <tr>
+    <td>17</td><td><code>browser_network_requests</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>네트워크 요청 목록 조회</td>
+  </tr>
+  <tr>
+    <td>18</td><td><code>browser_console_messages</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>콘솔 메시지 목록 조회</td>
+  </tr>
+  <tr>
+    <td>19</td><td><code>browser_run_code_unsafe</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>임의 코드 실행 (위험)</td>
+  </tr>
+  <tr>
+    <td>20</td><td><code>browser_close</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>브라우저 종료</td>
+  </tr>
+  <tr>
+    <td>21</td><td><code>browser_new_page</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>새 페이지 생성 (Official은 <code>browser_tabs</code>로)</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════ 2. Stealth 전용 툴 ═══════════ -->
+<h2>2. Stealth 전용 툴</h2>
+<p>
+  <strong class="inline-highlight">stealth-playwright-mcp</strong>에만 존재하는 7개의 툴입니다.
+  세션 관리, 멀티 페이지 제어, 핑거프린트 진단 등 Stealth만의 고유 기능을 제공합니다.
+</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Tool Name</th>
+    <th>Category</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td><td><code>browser_start</code></td>
+    <td><span class="cat cat-page">Lifecycle</span></td>
+    <td>브라우저 프로세스 시작 — persistent context 기반으로 세션 유지</td>
+  </tr>
+  <tr>
+    <td>2</td><td><code>browser_status</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>현재 브라우저 실행 상태, 열린 페이지 목록 확인</td>
+  </tr>
+  <tr>
+    <td>3</td><td><code>browser_pages</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>열려 있는 모든 페이지 목록 조회</td>
+  </tr>
+  <tr>
+    <td>4</td><td><code>browser_switch_page</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>활성 페이지 전환 (멀티 탭 시나리오)</td>
+  </tr>
+  <tr>
+    <td>5</td><td><code>browser_close_page</code></td>
+    <td><span class="cat cat-page">Page</span></td>
+    <td>특정 페이지만 닫기 (브라우저는 유지)</td>
+  </tr>
+  <tr>
+    <td>6</td><td><code>browser_fingerprint_check</code></td>
+    <td><span class="cat cat-info">Info</span></td>
+    <td>핑거프린트 우회 상태 진단 — navigator, WebGL, 폰트 등 체크</td>
+  </tr>
+  <tr>
+    <td>7</td><td><code>browser_fill</code></td>
+    <td><span class="cat cat-input">Input</span></td>
+    <td>단순화된 텍스트 입력 (요소 지정 + 값)</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════ 3. Official 전용 툴 (미구현) ═══════════ -->
+<h2>3. Official 전용 툴 (미구현)</h2>
+<p>
+  <strong class="inline-highlight">@playwright/mcp</strong>에만 존재하는 약 17개의 툴입니다.
+  탭 관리, 네트워크 인터셉션, 스토리지 조작, 비전/디버깅, PDF 생성 등 공식 MCP가 제공하는
+  고급 기능들입니다. 현재 stealth-playwright-mcp에는 구현되어 있지 않습니다.
+</p>
+
+<div class="cat-section">
+  <h3>🧭 Tab Management</h3>
+  <ul>
+    <li><code>browser_tabs</code> — 탭 생성·전환·닫기·목록 (Stealth의 <code>browser_pages</code>/<code>browser_switch_page</code>로 부분 커버)</li>
+  </ul>
+</div>
+
+<div class="cat-section">
+  <h3>🌐 Network Interception</h3>
+  <ul>
+    <li><code>browser_network_route</code> — 요청 가로채기 / 모의 응답</li>
+    <li><code>browser_network_unroute</code> — 라우트 제거</li>
+    <li><code>browser_network_route_list</code> — 등록된 라우트 목록</li>
+    <li><code>browser_network_state_set</code> — 오프라인/온라인 전환</li>
+    <li><code>browser_network_request</code> — 단일 요청 전송 및 응답 반환</li>
+  </ul>
+</div>
+
+<div class="cat-section">
+  <h3>🗄️ Storage (Cookies / localStorage / sessionStorage)</h3>
+  <ul>
+    <li><code>browser_cookies_*</code> (get / set / clear / list — 4개)</li>
+    <li><code>browser_local_storage_*</code> (get / set / clear / list / remove — 5개)</li>
+    <li><code>browser_session_storage_*</code> (get / set / clear / list / remove — 5개)</li>
+    <li>총 <strong>14개</strong>의 Storage 계열 툴</li>
+  </ul>
+</div>
+
+<div class="cat-section">
+  <h3>🔍 Vision &amp; Debug</h3>
+  <ul>
+    <li><code>browser_highlight</code> — 요소 하이라이트 표시</li>
+    <li><code>browser_annotate</code> — 페이지에 주석 오버레이</li>
+    <li><code>browser_mouse_xy</code> — 마우스 좌표 이동</li>
+    <li><code>browser_mouse_click_xy</code> — 좌표 기반 클릭</li>
+    <li><code>browser_mouse_drag_xy</code> — 좌표 기반 드래그</li>
+  </ul>
+</div>
+
+<div class="cat-section">
+  <h3>📄 PDF &amp; Test Utilities</h3>
+  <ul>
+    <li><code>browser_pdf_save</code> — 페이지를 PDF로 저장</li>
+    <li><code>browser_verify_*</code> — 요소 상태 검증 (텍스트/가시성 등)</li>
+    <li><code>browser_generate_locator</code> — 요소 로케이터 자동 생성</li>
+    <li><code>browser_tracing_*</code> — 트레이싱 시작/중지</li>
+    <li><code>browser_video_*</code> — 세션 영상 녹화</li>
+  </ul>
+</div>
+
+<!-- ═══════════ 4. 이름 변경 내역 ═══════════ -->
+<h2>4. 이름 변경 내역</h2>
+<p>
+  Stealth 개발 과정에서 <strong>@playwright/mcp</strong>와의 이름 불일치를 해소하기 위해
+  변경된 툴 이름입니다.
+</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Old Name (Stealth)</th>
+    <th>New Name (Aligned)</th>
+    <th>Reason</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td><code>browser_screenshot</code></td>
+    <td><code>browser_take_screenshot</code></td>
+    <td>@playwright/mcp 명명 규칙에 맞춰 <code>take_</code> 접두어 추가</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><code>browser_press</code></td>
+    <td><code>browser_press_key</code></td>
+    <td><code>press</code>의 모호성 해소 — 키 입력임을 명시</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════ 5. 아키텍처 비교 ═══════════ -->
+<h2>5. 아키텍처 비교</h2>
+<p>
+  두 MCP 서버는 동일한 Playwright 생태계를 기반으로 하지만, 엔진과 설계 철학에서
+  근본적인 차이가 있습니다.
+</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+  <tr>
+    <th>Dimension</th>
+    <th>stealth-playwright-mcp</th>
+    <th>@playwright/mcp</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="arch-label">Engine</td>
+    <td><strong>Patchright</strong> — Playwright fork with stealth patches</td>
+    <td><strong>Playwright</strong> — Microsoft official</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Transport</td>
+    <td>stdio (표준 입출력) + SSE 지원</td>
+    <td>stdio (표준 입출력)</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Browser Lifecycle</td>
+    <td>Persistent Context — 브라우저 프로세스를 <code>browser_start</code>/<code>browser_close</code>로 명시적 제어</td>
+    <td>Stateless — 각 호출마다 필요 시 브라우저 자동 실행</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Profile</td>
+    <td>프로필 디렉토리 기반 — 쿠키, 로컬스토리지, 세션 영구 보존</td>
+    <td>Isolated context — 세션 간 상태 비공유 (Storage 툴로 명시적 관리)</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Persistence</td>
+    <td>브라우저 종료 후에도 프로필 유지 → 재시작 시 로그인 상태 복원</td>
+    <td>매 세션 초기화 — 로그인 상태 유지하려면 Storage 툴로 저장·복원 필요</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Multi-tab</td>
+    <td><code>browser_pages</code> / <code>browser_switch_page</code> / <code>browser_close_page</code> 전용 툴</td>
+    <td><code>browser_tabs</code> 통합 관리 (생성·전환·닫기·목록)</td>
+  </tr>
+  <tr>
+    <td class="arch-label">Fingerprint</td>
+    <td><strong>내장</strong> — Patchright가 navigator, WebGL, canvas, font 등 스푸핑 + <code>browser_fingerprint_check</code> 진단</td>
+    <td>미지원 — 별도 stealth 플러그인 필요</td>
+  </tr>
+  <tr>
+    <td class="arch-label">CDP Attach</td>
+    <td>지원 — Chrome DevTools Protocol 직접 연결 가능 (<code>--cdp</code> 플래그)</td>
+    <td>미지원</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+  Generated 2026-05-27 &middot; stealth-playwright-mcp &middot; Tool comparison matrix
+</footer>
+
+</div>
+</body>
+</html>
