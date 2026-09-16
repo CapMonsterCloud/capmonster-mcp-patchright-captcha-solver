@@ -22,7 +22,7 @@ evaluated code. Everything else matches upstream mcp-patchright.
 | `navigator.webdriver` | `true` | `false` / `undefined` |
 | Anti-bot evasion | ❌ | ✅ |
 
-See the [full comparison](#) for details.
+See the [full comparison](docs/tool-comparison.html) for details.
 
 ## Quick start
 
