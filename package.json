@@ -1,6 +1,7 @@
 {
   "name": "capmonster-mcp-patchright",
   "version": "1.1.0",
+  "mcpName": "io.github.CapMonsterCloud/capmonster-mcp-patchright-captcha-solver",
   "description": "Fork of mcp-patchright that adds a per-call world:'main' option to browser_evaluate / browser_run_code_unsafe, so page-defined window globals are visible and callable. Defaults to Patchright's isolated stealth world; opt into main only when you need it. Everything else matches upstream mcp-patchright.",
   "type": "module",
   "main": "dist/index.js",
