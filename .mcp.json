@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "capmonster-mcp-patchright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "capmonster-mcp-patchright"
+      ],
+      "env": {
+        "CM_API_KEY": "${env:CM_API_KEY}"
+      }
+    }
+  }
+}
