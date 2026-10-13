@@ -1,14 +1,11 @@
 <p align="center">
-  <img src="assets/logo.png" alt="CapMonster Cloud" width="200">
+  <img src="assets/logo.svg" alt="CapMonster Cloud" width="200">
 </p>
 
 # capmonster-mcp-patchright
 
 **Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
 
-[
-[
-[
 
 Built for automation on sites protected by Cloudflare, Akamai, Kasada and DataDome.
 When the page shows a CAPTCHA, pair it with the
