@@ -1,10 +1,24 @@
+<p align="center">
+  <img src="assets/logo.png" alt="CapMonster Cloud" width="200">
+</p>
+
 # capmonster-mcp-patchright
 
-🛡️ Undetectable browser MCP server — 66 tools, Patchright-powered, zero CDP fingerprint.
+**Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
 
-[![npm]](https://npmjs.com/capmonster-mcp-patchright) [![MCP]](https://modelcontextprotocol.io)
+[
+[
+[
 
-Passes Cloudflare / Akamai / Kasada / Datadome.
+Built for automation on sites protected by Cloudflare, Akamai, Kasada and DataDome.
+When the page shows a CAPTCHA, pair it with the
+[CapMonster Cloud MCP server](https://github.com/CapMonsterCloud/capmonster-mcp-captcha-solver):
+this server drives the browser, CapMonster Cloud solves the CAPTCHA.
+[Learn more](https://capmonster.cloud/en/mcp/?utm_source=github&utm_medium=referral&utm_campaign=mcp_patchright_readme&utm_content=intro)
+
+**[👉 Get your CapMonster Cloud API Key](https://dash.capmonster.cloud/Account/SignUp?utm_source=github&utm_medium=referral&utm_campaign=mcp_patchright_readme&utm_content=header_button)**
+
+***
 
 Fork of [mcp-patchright](https://github.com/maestrojeong/mcp-patchright) that adds a per-call
 `world: "main"` option to `browser_evaluate` / `browser_run_code_unsafe`, so page-defined window
@@ -114,115 +128,4 @@ Full comparison HTML in [/docs/tool-comparison.html](docs/tool-comparison.html).
 - `browser_route_clear`
 - `browser_storage_save`
 - `browser_storage_load`
-- `browser_cookie_list`
-- `browser_cookie_get`
-- `browser_cookie_set`
-- `browser_cookie_delete`
-- `browser_cookie_clear`
-- `browser_localstorage_list`
-- `browser_localstorage_get`
-- `browser_localstorage_set`
-- `browser_localstorage_delete`
-- `browser_localstorage_clear`
-- `browser_sessionstorage_list`
-- `browser_sessionstorage_get`
-- `browser_sessionstorage_set`
-- `browser_sessionstorage_delete`
-- `browser_sessionstorage_clear`
-- `browser_passkey_install`
-- `browser_passkey_create`
-- `browser_passkey_list`
-- `browser_passkey_delete`
-- `browser_video_save`
-- `browser_highlight`
-- `browser_hide_highlight`
-- `browser_save_blob`
-- `browser_save_pdf`
-- `browser_close`
-
-## Development
-
-### Owner-scoped HTTP sessions
-
-HTTP mode requires a stable owner on
-the MCP URL (`?owner=<id>`) or with the `X-Browser-Owner` header. Page listing,
-switching, navigation, and closing are restricted to that owner's tabs. Delete
-`/owners?owner=<id>` to close all tabs owned by one caller without stopping the
-browser or clearing the profile.
-
-```bash
-npm install
-npm run build
-node dist/index.js
-```
-
-### Release
-
-Install the matching Chromium build once, then prepare a release from the exact
-dependency versions in `package-lock.json`, run the full verification suite,
-and inspect the package without publishing it:
-
-```bash
-npx patchright install chromium
-npm run release:check
-npm publish
-```
-
-By default, `browser_start` launches Chromium via patchright as headed real Chrome with a persistent profile at:
-
-```text
-~/.maestro/stealth-playwright-mcp/profiles/default
-```
-
-You can override it with the `userDataDir` tool argument or `STEALTH_PLAYWRIGHT_USER_DATA_DIR`.
-
-To attach to an already-running Chrome instead of launching one, start Chrome with remote debugging and pass `cdpEndpoint` to `browser_start`:
-
-```bash
-google-chrome --remote-debugging-port=9222 --user-data-dir=$HOME/.maestro/stealth-playwright-mcp/profiles/cdp
-```
-
-```json
-{ "cdpEndpoint": "http://127.0.0.1:9222" }
-```
-
-`browser_snapshot` returns Playwright's AI aria snapshot. Use `[ref=eN]` values from that snapshot with `browser_click`, `browser_fill`, `browser_type`, `browser_hover`, `browser_press`, and `browser_wait_for` by passing `{ "ref": "eN" }`. CSS selectors remain supported via `{ "selector": "..." }`.
-
-MCP config example:
-
-```json
-{
-  "mcpServers": {
-    "patchright": {
-      "command": "node",
-      "args": ["/path/to/capmonster-mcp-patchright/dist/index.js"]
-    }
-  }
-}
-```
-
-## Direction
-
-Shipped:
-
-- ✅ persistent user data dirs
-- ✅ CDP attach to real Chrome
-- ✅ proxy / timezone / locale / geolocation profiles
-- ✅ accessibility snapshots for LLM-friendly page control
-- ✅ fingerprint diagnostics
-- ✅ network interception (block / mock)
-- ✅ session import/export (storageState)
-- ✅ PDF export
-- ✅ authenticated API requests (reuse browser cookies)
-- ✅ lightweight text/HTML extraction
-- ✅ iframe actions
-- ✅ `world: "main"` opt-in for `browser_evaluate` / `browser_run_code_unsafe`
-- ✅ aria-snapshot search (`browser_find`)
-- ✅ save Blob/data URL output to disk (`browser_save_blob`)
-
-Next:
-
-- rebrowser-playwright backend
-- codegen sessions
-- coordinate-based (vision) clicks
-- tracing / video recording
+-
