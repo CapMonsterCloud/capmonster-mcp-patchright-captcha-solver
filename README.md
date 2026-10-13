@@ -4,8 +4,13 @@
 
 # capmonster-mcp-patchright
 
-**Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
+<p>
+  <a href="[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)"><img src="https&#58;//img&#46;shields&#46;io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="[https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)"><img src="https&#58;//img&#46;shields&#46;io/badge/MCP-Supported-blue.svg" alt="MCP Protocol"></a>
+  <a href="[https://www.npmjs.com/package/capmonster-mcp-patchright](https://www.npmjs.com/package/capmonster-mcp-patchright)"><img src="https&#58;//img&#46;shields&#46;io/npm/v/capmonster-mcp-patchright" alt="npm"></a>
+</p>
 
+**Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
 
 Built for automation on sites protected by Cloudflare, Akamai, Kasada and DataDome.
 When the page shows a CAPTCHA, pair it with the
