@@ -258,3 +258,5 @@ automation signals; acceptance of automated traffic by any site is not guarantee
 
 ## 📄 License
 [MIT](LICENSE)
+
+<a href="https://devhunt.org/tool/capmonster-cloud-mcp" target="_blank" title="CapMonster Cloud MCP on DevHunt"><img src="https://devhunt.org/badge/capmonster-cloud-mcp.svg" alt="CapMonster Cloud MCP - Featured on DevHunt" width="220" height="54" /></a>
