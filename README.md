@@ -2,12 +2,14 @@
   <img src="assets/logo.svg" alt="CapMonster Cloud" width="200">
 </p>
 
-# capmonster-mcp-patchright
+# capmonster-mcp-patchright: Stealth Browser MCP Server for AI Agents
+
+> **Building an AI agent that has to work on anti-bot protected sites?** Pair this stealth browser with the [CapMonster Cloud MCP server](https://github.com/CapMonsterCloud/capmonster-mcp-captcha-solver), a cost-effective **capsolver alternative** and **2captcha alternative**: reCAPTCHA v3 starts at **$0.90 per 1,000 solves**, which is **up to 38% cheaper than 2Captcha** and **10% cheaper than Capsolver**. See the pairing example and the comparison below.
 
 <p>
-  <a href="[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)"><img src="https&#58;//img&#46;shields&#46;io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-  <a href="[https://modelcontextprotocol.io/](https://modelcontextprotocol.io/)"><img src="https&#58;//img&#46;shields&#46;io/badge/MCP-Supported-blue.svg" alt="MCP Protocol"></a>
-  <a href="[https://www.npmjs.com/package/capmonster-mcp-patchright](https://www.npmjs.com/package/capmonster-mcp-patchright)"><img src="https&#58;//img&#46;shields&#46;io/npm/v/capmonster-mcp-patchright" alt="npm"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-Supported-blue.svg" alt="MCP Protocol"></a>
+  <a href="https://www.npmjs.com/package/capmonster-mcp-patchright"><img src="https://img.shields.io/npm/v/capmonster-mcp-patchright" alt="npm"></a>
 </p>
 
 **Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
@@ -15,7 +17,7 @@
 Built for automation on sites protected by Cloudflare, Akamai, Kasada and DataDome.
 When the page shows a CAPTCHA, pair it with the
 [CapMonster Cloud MCP server](https://github.com/CapMonsterCloud/capmonster-mcp-captcha-solver):
-this server drives the browser, CapMonster Cloud solves the CAPTCHA.
+this server drives the browser, CapMonster Cloud solves the CAPTCHA. Use the 66 `browser_*` tools for AI-agent web scraping and browser automation with Claude, GPT and other MCP clients, powered by Patchright, a patched Playwright with reduced automation signals.
 [Learn more](https://capmonster.cloud/en/mcp/?utm_source=github&utm_medium=referral&utm_campaign=mcp_patchright_readme&utm_content=intro)
 
 **[👉 Get your CapMonster Cloud API Key](https://dash.capmonster.cloud/Account/SignUp?utm_source=github&utm_medium=referral&utm_campaign=mcp_patchright_readme&utm_content=header_button)**
@@ -59,6 +61,39 @@ capmonster-mcp-patchright --port 9321 --host 127.0.0.1
   }
 }
 ```
+
+## 🔗 Pair with CapMonster Cloud MCP for captcha solving
+
+This server drives the browser; the CapMonster Cloud MCP server solves the CAPTCHA and the agent injects the token back into the page. Add both servers to your MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "patchright": {
+      "command": "npx",
+      "args": ["capmonster-mcp-patchright", "--port", "9321", "--host", "127.0.0.1"]
+    },
+    "capmonster": {
+      "command": "uvx",
+      "args": ["capmonster-mcp"],
+      "env": {
+        "CM_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+Get your key from the [CapMonster Cloud Dashboard](https://dash.capmonster.cloud/Account/SignUp?utm_source=github&utm_medium=referral&utm_campaign=mcp_patchright_readme&utm_content=pairing).
+
+### Captcha solving MCP servers compared
+
+| Parameter | CapMonster Cloud MCP | CapSolver MCP | 2Captcha mcp-captcha-solver |
+| :--- | :--- | :--- | :--- |
+| Captcha types available through MCP | **reCAPTCHA v2 / v2 Enterprise / v3, Cloudflare Turnstile and Challenge, FunCaptcha, GeeTest v3 / v4, AWS WAF, DataDome, Imperva, TSPD, Binance, Prosopo, Yidun, TenDI, Hunt, Altcha, Basilisk, image tasks** | reCAPTCHA v2, reCAPTCHA v3, Cloudflare Turnstile | reCAPTCHA v2 |
+| reCAPTCHA v3 price per 1,000 solves (from) | **$0.90** | $1.00 | $1.45 |
+
+*Disclaimer: CapSolver and 2Captcha are trademarks of their respective owners. CapMonster Cloud is not affiliated with these entities. MCP coverage of other services is based on their publicly available documentation and repositories as of 27.10.2026 and may change. Pricing comparisons are based on publicly available data and internal benchmarking conducted on 27.09.2026.*
 
 ## Features
 
@@ -242,6 +277,23 @@ Next:
 - codegen sessions
 - coordinate-based (vision) clicks
 - tracing / video recording
+
+## ❓ FAQ
+
+**What is capmonster-mcp-patchright?**
+A stealth browser MCP server for AI agents with 66 tools, built on Patchright, a patched Playwright with reduced CDP automation signals.
+
+**Does it solve CAPTCHAs?**
+No. This server drives the browser. Pair it with the [CapMonster Cloud MCP server](https://github.com/CapMonsterCloud/capmonster-mcp-captcha-solver) to solve reCAPTCHA, Cloudflare Turnstile, DataDome and other captchas.
+
+**Is CapMonster Cloud a capsolver alternative or a 2captcha alternative for AI agents?**
+For the captcha solving part, yes. The CapMonster Cloud MCP server covers more captcha types than the CapSolver MCP server (reCAPTCHA v2, v3 and Turnstile) and the 2Captcha `mcp-captcha-solver` project (reCAPTCHA v2), and reCAPTCHA v3 starts at $0.90 per 1,000 solves. See the comparison above and its disclaimer.
+
+**How is it different from Playwright?**
+Patchright removes the `Runtime.enable` and `Console.enable` calls and the `--enable-automation` flag, and `navigator.webdriver` is not `true`. See the comparison table above.
+
+**Can it control an already-running Chrome?**
+Yes. Start Chrome with remote debugging and pass `cdpEndpoint` to `browser_start`.
 
 ## ⚖️ Responsible use
 
