@@ -11,6 +11,7 @@
   <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-Supported-blue.svg" alt="MCP Protocol"></a>
   <a href="https://www.npmjs.com/package/capmonster-mcp-patchright"><img src="https://img.shields.io/npm/v/capmonster-mcp-patchright" alt="npm"></a>
 </p>
+<a href="https://glama.ai/mcp/servers/CapMonsterCloud/capmonster-mcp-patchright-captcha-solver"><img src="https://glama.ai/mcp/servers/CapMonsterCloud/capmonster-mcp-patchright-captcha-solver/badges/score.svg" alt="CapMonsterCloud/capmonster-mcp-patchright-captcha-solver MCP server"></a>
 
 **Stealth browser MCP server for AI agents** — 66 tools, Patchright-powered, reduced CDP automation signals.
 
